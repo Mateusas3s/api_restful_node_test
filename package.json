@@ -1,0 +1,22 @@
+{
+  "name": "api_restful_node_test",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Mateusas3s/api_restful_node_test.git"
+  },
+  "author": "Mateus Augusto Sousa e Silva",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Mateusas3s/api_restful_node_test/issues"
+  },
+  "homepage": "https://github.com/Mateusas3s/api_restful_node_test#readme",
+  "dependencies": {
+    "express": "^4.17.1"
+  }
+}
