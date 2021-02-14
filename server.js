@@ -8,9 +8,6 @@ mongoose.connect('mongodb+srv://mateusas3s:1234@cluster0.h5nha.mongodb.net/clust
     {useUnifiedTopology: true}
 )
 
-// conecção pelo banco local
-// mongoose.connect('mongodb://localhost:27017/cluster0')
-
 var app = express()
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use(bodyParser.json())
@@ -28,8 +25,10 @@ router.get('/', (req, res) => {
     res.json({ message: "Bem-vindo a nossa Loja Api!" })
 })
 
-router.route('/produtos')
 
+router.route('/produtos')
+    
+    // Criar produtos
     .post((req, res) => {
         var produto = new Produto()
         
@@ -41,10 +40,10 @@ router.route('/produtos')
             if (error)
                 res.send(`Erro ao tentar salvar o produto: ${error}`)
             res.json({ message: 'Produto cadastrado com sucesso!' })
-
         })
     })
 
+    // Listar produtos
     .get((req, res) => {
         Produto.find((error, produto) => {
             if (error) 
@@ -53,6 +52,52 @@ router.route('/produtos')
         })
     })
 
+router.route('/produtos/:produto_id')
+
+    // Listar um produto
+    .get((req, res) => {
+
+        Produto.findById(req.params.produto_id, (error, produto) => {
+            if(error)
+                res.send('Id do produto não encontrado')
+            res.json(produto)
+        })
+    })
+    
+    // Atualizar atributos do produto
+    .put((req, res) => {
+
+        Produto.findById(req.params.produto_id, (error, produto) => {
+            if(error)
+                res.send('Id do produto não encontrado')
+
+            produto.nome = req.body.nome
+            produto.preco = req.body.preco
+            produto.descricao = req.body.descricao
+            produto.save((error) => {
+                if (error) 
+                    res.send(`Erro ao atualizar o produto...: ${error}`)
+                
+                res.json({ message: 'Produto atualizado com sucesso' })
+            })
+        })
+    })
+
+    // Deletar produto
+    .delete((req, res) => {
+
+        Produto.remove({
+            _id: req.params.produto_id
+        },
+        (error) => {
+            if (error)
+                res.send(`Erro ao deletar o produto...: ${error}`)    
+
+            res.json({ message: `Produto deletado com sucesso` })
+        })
+    })
+
+// Define padrão /api para rotas
 app.use('/api', router)
 
 app.listen(port)
